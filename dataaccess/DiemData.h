@@ -18,5 +18,6 @@ public:
     void AddElement(Diem&);
     void EditElement(Diem&, int&);
     void DeleteElement(int);
+    void Swap(int&, int&);
 };
 #endif

@@ -14,6 +14,7 @@ private:
 public:
     Diem();
     Diem(string, string, int);
+    Diem(const Diem&);
     int IncreaseID();
     int& GetIDMax();
     string GetMaHP();

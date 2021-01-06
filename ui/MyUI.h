@@ -16,7 +16,6 @@ public:
     void ChooseObject();
     void ChooseOption(int );
     void ListStudentHighestPoint(int);
-    void ListStudentHighestPoint1(int);
     void ListStudentOldest(int);
 };
 #endif

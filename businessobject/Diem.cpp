@@ -9,6 +9,13 @@ Diem::Diem(string masv, string mahp, int diem) {
     this->diem = diem;
 }
 
+Diem::Diem(const Diem& d) {
+    ID = d.ID;
+    masv = d.masv;
+    mahp = d.mahp;
+    diem = d.diem;
+}
+
 int Diem::IncreaseID() {
     return ID = ++sIDMax;
 }

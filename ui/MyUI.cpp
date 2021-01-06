@@ -8,75 +8,27 @@ void MyUI::Display(DataBusinessObject* databusinessobject) {
     cout << endl;
 }
 
-void MyUI::ListStudentHighestPoint(int n) {
-    vector<int> sortDiem;
-    sortDiem.resize(diemdata.GetSize());
-    for (int i = 0; i < diemdata.GetSize(); i++) {
-        sortDiem[i] = diemdata.Get(i).GetDiem();
-    }
-    for (int i = 0; i < sortDiem.size() - 1; i++) {
-        for (int j = i + 1; j < sortDiem.size(); j++) {
-            if (sortDiem[j] > sortDiem[i]) {
-                swap(sortDiem[j], sortDiem[i]);
-            }
-        }
-    }
-    int count = 0;
-    for (int j = 0; j < sortDiem.size(); j++) {
-        for (int i = 0; i < diemdata.GetSize(); i++) {
-            if (diemdata.Get(i).GetDiem() == sortDiem[j]) {
-                cout << "ID: " << diemdata.Get(i).PrintElement() << endl;
-                count++;
-            }
-            if (count == n) {
-                break;
-            }
-        }
-        if (count == n) {
-            break;
-        }
-    }
+void swap1(Diem &A,Diem &B)
+{
+   Diem temp= A;
+   A=B;
+   B=temp;
 }
 
-void MyUI::ListStudentHighestPoint1(int n) {
+void MyUI::ListStudentHighestPoint(int n) {
     DiemData diemdata1 = diemdata;
-    for (int i = 0; i < diemdata.GetSize(); i++) {
-        diemdata1.Get(i) = diemdata.Get(i);
+    for (int i = 0; i < diemdata1.GetSize() - 1; i++) {
+        for (int j = i + 1; j < diemdata1.GetSize(); j++) {
+            if (diemdata1.Get(j).GetDiem() > diemdata1.Get(i).GetDiem()) {
+                diemdata1.Swap(j, i);
+            }
+        }
     }
-    
+    Display(&diemdata1);
 }
 
 void MyUI::ListStudentOldest(int n) {
-    vector<int> sortAge;
-    sortAge.resize(studentdata.GetSize());
-    string Bdate;
-    for (int i = 0; i < studentdata.GetSize(); i++) {
-        Bdate = ReplaceAll::replaceAll(studentdata.Get(i).GetNgaySinh(), "-", "");
-        sortAge[i] = stoi(Bdate);
-    }
-    for (int i = 0; i < sortAge.size() - 1; i++) {
-        for (int j = i + 1; j < sortAge.size(); j++) {
-            if (sortAge[j] < sortAge[i]) {
-                swap(sortAge[j], sortAge[i]);
-            }
-        }
-    }
-    int count = 0;
-    for (int i = 0; i < sortAge.size(); i++) {
-        Bdate = to_string(sortAge[i]);
-        for (int j = 0; j < studentdata.GetSize(); j++) {
-            if (Bdate == ReplaceAll::replaceAll(studentdata.Get(j).GetNgaySinh(), "-", "")) {
-                cout << "ID: " << studentdata.Get(j).PrintElement() << endl;
-                count++;
-            }
-            if (count == n) {
-                break;
-            }
-        }
-        if (count == n) {
-            break;
-        }
-    }
+    
 }
 
 void MyUI::ChooseSentence() {
@@ -104,7 +56,7 @@ void MyUI::ChooseSentence() {
                 int n;
                 cout << "Nhap so sinh vien co diem thi cao nhat: ";
                 cin >> n;
-                ListStudentHighestPoint1(n);
+                ListStudentHighestPoint(n);
                 break;
             case 3:
                 int x;

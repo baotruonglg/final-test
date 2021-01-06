@@ -54,3 +54,10 @@ void DiemData::DeleteElement(int i) {
     }
     arrDiemData.back().GetIDMax() = arrDiemData.size();
 }
+
+void DiemData::Swap(int& i, int& j) {
+    Diem temp;
+    temp = arrDiemData[i];
+    arrDiemData[i] = arrDiemData[j];
+    arrDiemData[j] = temp;
+}
