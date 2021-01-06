@@ -1,0 +1,5 @@
+4
+SV0001	Do_Thi_Ha	1999-12-22	Nu
+SV0002	Le_Binh_Minh	2000-08-19	Nam
+SV0003	Nguyen_Minh_Canh	1997-04-09	Nam
+SV0004	Le_Huu_Long	2000-01-02	Nam

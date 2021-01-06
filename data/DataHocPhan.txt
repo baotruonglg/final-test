@@ -1,0 +1,6 @@
+5
+HP0001	Tin_hoc_dai_cuong	3
+HP0002	Phap_luat_dai_cuong	2
+HP0003	Chinh_tri	5
+HP0004	Tieng_Anh	2
+HP0005	C++	3
