@@ -1,21 +1,27 @@
-#ifndef _ui_MyUI_H_
-#define _ui_MyUI_H_
+#ifndef ui_MyUI_H_
+#define ui_MyUI_H_
 
+#include "../dataaccess/MarkData.h"
 #include "../dataaccess/StudentData.h"
-#include "../dataaccess/DiemData.h"
-#include "../dataaccess/HocPhanData.h"
+#include "../dataaccess/SubjectData.h"
+#include <direct.h>
+#include <iostream>
+
+using namespace std;
 
 class MyUI {
 private:
+    MarkData markdata;
     StudentData studentdata;
-    DiemData diemdata;
-    HocPhanData hocphandata;
+    SubjectData subjectdata;
 public:
-    void Display(DataBusinessObject* );
+    void Display(DataAccess*);
     void ChooseSentence();
-    void ChooseObject();
-    void ChooseOption(int );
-    void ListStudentHighestPoint(int);
-    void ListStudentOldest(int);
+    void ChooseClass();
+    void ChooseOption(int);
+    void StoreData(string&);
+    void RestoreData();
+    void ListStudentHighestMark(int);
+    void ListStudentOldestAge(int);
 };
 #endif

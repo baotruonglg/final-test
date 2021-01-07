@@ -1,13 +1,14 @@
 #include "Student.h"
 
 Student::Student() {
+
 }
 
-Student::Student(string masv, string hoten, string ngaysinh, string gioitinh) {
-    this->masv = masv;
-    this->hoten = hoten;
-    this->ngaysinh = ngaysinh;
-    this->gioitinh = gioitinh;
+Student::Student(string sid, string sname, string bdate, string sex) {
+    _sid = sid;
+    _sname = sname;
+    _bdate = bdate;
+    _sex = sex;
 }
 
 int Student::IncreaseID() {
@@ -18,29 +19,29 @@ int& Student::GetIDMax() {
     return sIDMax;
 }
 
-string Student::GetMaSV() {
-    return masv;
-}
-
-string Student::GetHoTen() {
-    return hoten;
-}
-
-string Student::GetNgaySinh() {
-    return ngaysinh;
-}
-
-string Student::GetGioiTinh() {
-    return gioitinh;
-}
-
 string Student::PrintElement() {
     string s;
-    s += "Ma sinh vien: " + masv + ", ";
-    s += "Ho ten: " + hoten + ", ";
-    s += "Ngay sinh: " + ngaysinh + ", ";
-    s += "Gioi tinh: " + gioitinh;
+    s += "StudentID: " + _sid + ", ";
+    s += "StudentName: " + _sname + ", ";
+    s += "BirthDay: " + _bdate + ", ";
+    s += "Sex: " + _sex;
     return s;
+}
+
+string Student::GetStudentID() {
+    return _sid;
+}
+
+string Student::GetStudentName() {
+    return _sname;
+}
+
+string Student::GetBirthDate() {
+    return _bdate;
+}
+
+string Student::GetSex() {
+    return _sex;
 }
 
 int Student::sIDMax = 0;

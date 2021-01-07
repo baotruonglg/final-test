@@ -1,0 +1,16 @@
+5
+HP0001
+Tin hoc dai cuong
+3
+HP0002
+Phap luat dai cuong
+2
+HP0003
+Chinh tri
+5
+HP0004
+Tieng anh
+2
+HP0005
+C++
+3

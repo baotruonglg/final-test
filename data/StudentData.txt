@@ -1,0 +1,17 @@
+4
+SV0001
+Do Thi Ha
+1999-12-22
+Nu
+SV0002
+Le Binh Minh
+2000-08-12
+Nam
+SV0003
+Nguyen Minh Canh
+1997-04-09
+Nam
+SV0004
+Le Huu Long
+2000-09-02
+Nam

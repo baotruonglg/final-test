@@ -1,5 +1,5 @@
 #include "BusinessObject.h"
 
-int& BusinessObject::GetId() {
+int& BusinessObject::GetID() {
     return ID;
 }

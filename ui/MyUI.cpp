@@ -1,237 +1,283 @@
 #include "MyUI.h"
-#include "../libs/ReplaceAll.h"
-void MyUI::Display(DataBusinessObject* databusinessobject) {
-    for (int i = 0; i < databusinessobject->GetSize(); i++) {
-        BusinessObject* businessobject = databusinessobject->GetPointer(i);
-        cout << "ID: " << businessobject->GetId() << ", " << businessobject->PrintElement() << endl;
+
+void MyUI::Display(DataAccess* dataaccess) {
+    for (int i = 0; i < dataaccess->GetSize(); i++) {
+        BusinessObject* businessobject = dataaccess->GetPointer(i);
+        cout << "ID: " << businessobject->GetID() << " " << businessobject->PrintElement() << endl;
     }
-    cout << endl;
+    cout << endl << endl;
 }
 
-void swap1(Diem &A,Diem &B)
-{
-   Diem temp= A;
-   A=B;
-   B=temp;
+void MyUI::StoreData(string& foldername) {
+    mkdir(("backupdata/" + foldername).c_str());
+    studentdata.ExportToFile("backupdata/" + foldername + "/StudentData.txt");
+    subjectdata.ExportToFile("backupdata/" + foldername + "/SubjectData.txt");
+    markdata.ExportToFile("backupdata/" + foldername + "/MarkData.txt");
+    ofstream fileOut("backupdata/storenamefile.txt", ios::app);
+    fileOut << foldername << endl;
+    fileOut.close();
 }
 
-void MyUI::ListStudentHighestPoint(int n) {
-    DiemData diemdata1 = diemdata;
-    for (int i = 0; i < diemdata1.GetSize() - 1; i++) {
-        for (int j = i + 1; j < diemdata1.GetSize(); j++) {
-            if (diemdata1.Get(j).GetDiem() > diemdata1.Get(i).GetDiem()) {
-                diemdata1.Swap(j, i);
+void MyUI::RestoreData() {
+    ifstream fileIn("backupdata/storenamefile.txt");
+    vector<string> storenamefile;
+    string temp;
+    while (getline(fileIn, temp)) {
+        storenamefile.push_back(temp);
+    }
+    int choice;
+    for (int i = 0; i < storenamefile.size(); i++) {
+        cout << "** " << i + 1 << " . " << storenamefile[i] << endl;
+    }
+    cout << endl << "** Your choice: ";
+    cin >> choice;
+    studentdata.ReadFile("backupdata/" + storenamefile[choice - 1] + "/StudentData.txt");
+    subjectdata.ReadFile("backupdata/" + storenamefile[choice - 1] + "/SubjectData.txt");
+    markdata.ReadFile("backupdata/" + storenamefile[choice - 1] + "/MarkData.txt");
+    Display(&studentdata);
+    Display(&subjectdata);
+    Display(&markdata);
+} 
+
+void MyUI::ListStudentHighestMark(int N) {
+    MarkData mark = markdata;
+    for (int i = 0; i < mark.GetSize() - 1; i++) {
+        for (int j = i + 1; j < mark.GetSize(); j++) {
+            Mark marki = mark.Get(i);
+            Mark markj = mark.Get(j);
+            if (markj.GetMark() > marki.GetMark()) {
+                mark.Swap(j, i);            
             }
         }
     }
-    Display(&diemdata1);
+    for (int i = 0; i < N; i++) {
+        cout << "ID: " << mark.Get(i).GetID() << ", StudentID: " << mark.Get(i).GetStudentID() << ", SubjectID: " << mark.Get(i).GetSubjectID() << ", Mark: " << mark.Get(i).GetMark();
+        cout << endl;
+    }
 }
 
-void MyUI::ListStudentOldest(int n) {
-    
+void MyUI::ListStudentOldestAge(int N) {
+    StudentData student = studentdata;
+    for (int i = 0; i < student.GetSize() - 1; i++) {
+        for (int j = i + 1; j < student.GetSize(); j++) {
+            Student studenti = student.Get(i);
+            Student studentj = student.Get(j);
+            if (studentj.GetBirthDate() < studenti.GetBirthDate()) {
+                student.Swap(j, i);            
+            }
+        }
+    }
+    for (int i = 0; i < N; i++) {
+        cout << "ID: " << student.Get(i).GetID() << ", StudentID: " + student.Get(i).GetStudentID() << ", StudentName: " << student.Get(i).GetStudentName() << ", Birthday: " << student.Get(i).GetBirthDate() << ", Sex: " << student.Get(i).GetSex();
+        cout << endl;
+    }
 }
 
 void MyUI::ChooseSentence() {
-    system("cls");
-    cout << endl << endl;
-    int yourchoice;
-    bool k = true;
+    int choice;
     do {
-        cout << "                CHOOSE SENTENCE              " << endl;
-        cout << "**********************************************" << endl;
-        cout << "** 1. Add, Edit, Delete, Read.               *" << endl;
-        cout << "** 2. List student has highest point.        *" << endl;
-        cout << "** 3. Student's oldest.                      *" << endl;
-        cout << "** 4. Exit.                                  *" << endl;
-        cout << "**********************************************" << endl;
+        system("cls");
+        cout << endl << endl << endl;
+        cout << "******************************MENU*******************************" << endl;
+        cout << "** 1. Read all file.                                            *" << endl;
+        cout << "** 2. Create, Update, Delete.                                   *" << endl;
+        cout << "** 3. Store date to file.                                       *" << endl;
+        cout << "** 4. Restore date from file.                                   *" << endl;
+        cout << "** 5. Display list students have highest mark.                  *" << endl;
+        cout << "** 6. Display list students have oldest age.                    *" << endl;
+        cout << "** 0. Exit.                                                     *" << endl;
+        cout << "**                                                              *" << endl;
+        cout << "*****************************************************************" << endl;
         cout << endl;
         cout << "** Your choice: ";
-        cin >> yourchoice;
-        switch (yourchoice)
+        cin >> choice;
+        cin.ignore();
+        switch (choice)
         {
             case 1:
-                ChooseObject();
+                studentdata.ReadFile("data/StudentData.txt");
+                subjectdata.ReadFile("data/SubjectData.txt");
+                markdata.ReadFile("data/MarkData.txt");
+                Display(&studentdata);
+                Display(&subjectdata);
+                Display(&markdata);
                 break;
             case 2:
-                int n;
-                cout << "Nhap so sinh vien co diem thi cao nhat: ";
-                cin >> n;
-                ListStudentHighestPoint(n);
+                ChooseClass();
                 break;
             case 3:
-                int x;
-                cout << "Nhap so sinh vien co tuoi cao nhat: ";
-                cin >> x;
-                ListStudentOldest(x);
+                {string foldername;
+                cout << "Enter the folder name which you want to store: ";
+                getline(cin, foldername);
+                StoreData(foldername);}
                 break;
             case 4:
+                RestoreData();
+                break;
+            case 5:
+                int number;
+                cout << "Enter number student have highest mark you want to type: ";
+                cin >> number;
+                cout << endl;
+                ListStudentHighestMark(number);
+                break;
+            case 6:
+                int list;
+                cout << "Enter list student have oldest age you want to type: ";
+                cin >> list;
+                cout << endl;
+                ListStudentOldestAge(list);
+                break;
+            case 0:
                 exit('0');
                 break;
             default:
-                k = false;
+                exit('0');
                 break;
         }
-    } while (k);
+        if (choice != 0) {
+            system("pause");
+            system("cls");
+        }
+    } while(true);
 }
 
-void MyUI::ChooseObject() {
-    int yourchoice;
+void MyUI::ChooseClass() {
+    int choice;
     bool k = true;
     do {
         system("cls");
-        cout << endl << endl;
-        cout << "                  CHOOSE OBJECT               " << endl;
-        cout << "**********************************************" << endl;
-        cout << "** 1. Student.                               *" << endl;
-        cout << "** 2. Hoc phan.                              *" << endl;
-        cout << "** 3. Diem.                                  *" << endl;
-        cout << "** 4. Return to back.                        *" << endl;
-        cout << "**********************************************" << endl;
+        cout << endl << endl << endl;
+        cout << "******************************MENU*******************************" << endl;
+        cout << "** 1. Student class.                                            *" << endl;
+        cout << "** 2. Subject class.                                            *" << endl;
+        cout << "** 3. Mark class.                                               *" << endl;
+        cout << "** 4. Return.                                                   *" << endl;
+        cout << "** 0. Exit.                                                     *" << endl;
+        cout << "**                                                              *" << endl;
+        cout << "*****************************************************************" << endl;
         cout << endl;
         cout << "** Your choice: ";
-        cin >> yourchoice;
-        switch (yourchoice)
+        cin >> choice;
+        switch (choice)
         {
             case 1:
-                ChooseOption(yourchoice);
+                ChooseOption(choice);
                 break;
             case 2:
-                ChooseOption(yourchoice);
+                ChooseOption(choice);
                 break;
             case 3:
-                ChooseOption(yourchoice);
+                ChooseOption(choice);
                 break;
             case 4:
                 k = false;
+                ChooseSentence();
+                break;
+            case 0:
+                exit('0');
                 break;
             default:
                 exit('0');
                 break;
         }
-    } while (k);
+    } while(k);
 }
 
 void MyUI::ChooseOption(int n) {
-    system("cls");
-    cout << endl << endl;
-    int yourchoice;
+    int choice;
     bool k = true;
     do {
-        cout << "                  CHOOSE OPTION               " << endl;
-        cout << "**********************************************" << endl;
-        cout << "** 1. Add.                                   *" << endl;
-        cout << "** 2. Eddit.                                 *" << endl;
-        cout << "** 3. Delete.                                *" << endl;
-        cout << "** 4. Read.                                  *" << endl;
-        cout << "** 5. Return to back.                        *" << endl;
-        cout << "**********************************************" << endl;
+        system("cls");
+        cout << endl << endl << endl;
+        cout << "******************************MENU*******************************" << endl;
+        cout << "** 1. Create data.                                              *" << endl;
+        cout << "** 2. Update data.                                              *" << endl;
+        cout << "** 3. Delete data.                                              *" << endl;
+        cout << "** 4. Return.                                                   *" << endl;
+        cout << "** 0. Exit.                                                     *" << endl;
+        cout << "**                                                              *" << endl;
+        cout << "*****************************************************************" << endl;
         cout << endl;
         cout << "** Your choice: ";
-        cin >> yourchoice;
+        cin >> choice;
         cin.ignore();
-        switch (yourchoice)
+        switch (choice)
         {
             case 1:
                 if (n == 1) {
                     Student s;
                     cin >> s;
-                    studentdata.AddElement(s);
+                    studentdata.CreateData(s);
                     Display(&studentdata);
                 }
                 else if (n == 2) {
-                    HocPhan hp;
-                    cin >> hp;
-                    hocphandata.AddElement(hp);
-                    Display(&hocphandata);
+                    Subject s;
+                    cin >> s;
+                    subjectdata.CreateData(s);
+                    Display(&subjectdata);
                 }
                 else {
-                    Diem d;
-                    cin >> d;
-                    diemdata.AddElement(d);
-                    Display(&diemdata);
+                    Mark m;
+                    cin >> m;
+                    markdata.CreateData(m);
+                    Display(&markdata);
                 }
                 break;
             case 2:
+                int idupdate;
+                cout << "Enter the student who you to update: ";
+                cin >> idupdate;
+                cin.ignore();
                 if (n == 1) {
-                    
-                    int n;
-                    cout << "Enter the number who want to eddit: ";
-                    cin >> n;
-                    cin.ignore();
                     Student s;
                     cin >> s;
-                    studentdata.EditElement(s, n);
+                    studentdata.UpdateData(s, idupdate);
                     Display(&studentdata);
                 }
                 else if (n == 2) {
-                    
-                    int n;
-                    cout << "Enter the number who want to eddit: ";
-                    cin >> n;
-                    cin.ignore();
-                    HocPhan hp;
-                    cin >> hp;
-                    hocphandata.EditElement(hp, n);
-                    Display(&hocphandata);
+                    Subject s;
+                    cin >> s;
+                    subjectdata.UpdateData(s, idupdate);
+                    Display(&subjectdata);
                 }
                 else {
-                    
-                    int n;
-                    cout << "Enter the number who want to eddit: ";
-                    cin >> n;
-                    cin.ignore();
-                    Diem d;
-                    cin >> d;
-                    diemdata.EditElement(d, n);
-                    Display(&diemdata);
+                    Mark m;
+                    cin >> m;
+                    markdata.UpdateData(m, idupdate);
+                    Display(&markdata);
                 }
                 break;
             case 3:
+                int iddelete;
+                cout << "Enter the student who you to delete: ";
+                cin >> iddelete;
                 if (n == 1) {
-                    
-                    int n;
-                    cout << "Enter the number who want to delete: ";
-                    cin >> n;
-                    studentdata.DeleteElement(n);
+                    studentdata.DeleteData(iddelete);
                     Display(&studentdata);
                 }
                 else if (n == 2) {
-                    
-                    int n;
-                    cout << "Enter the number who want to delete: ";
-                    cin >> n;
-                    hocphandata.DeleteElement(n);
-                    Display(&hocphandata);
+                    subjectdata.DeleteData(iddelete);
+                    Display(&subjectdata);
                 }
                 else {
-                    
-                    int n;
-                    cout << "Enter the number who want to delete: ";
-                    cin >> n;
-                    diemdata.DeleteElement(n);
-                    Display(&diemdata);
+                    markdata.DeleteData(iddelete);
+                    Display(&markdata);
                 }
                 break;
             case 4:
-                if (n == 1) {
-                    studentdata.ReadFile("data/DataStudent.txt");
-                    Display(&studentdata);
-                }
-                else if (n == 2) {
-                    hocphandata.ReadFile("data/DataHocPhan.txt");
-                    Display(&hocphandata);
-                }
-                else {
-                    diemdata.ReadFile("data/DataDiem.txt");
-                    Display(&diemdata);
-                }
-                break;
-            case 5:
                 k = false;
+                break;
+            case 0:
+                exit('0');
                 break;
             default:
                 exit('0');
                 break;
         }
-    } while (k);
+        if (choice != 0 && choice != 4) {
+            system("pause");
+            system("cls");
+        }
+    } while(k);
 }

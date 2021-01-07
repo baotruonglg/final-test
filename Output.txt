@@ -1,1 +1,1 @@
-g++ businessobject/BusinessObject.cpp businessobject/Diem.cpp businessobject/HocPhan.cpp businessobject/Student.cpp dataaccess/DiemData.cpp dataaccess/HocPhanData.cpp dataaccess/StudentData.cpp ui/Input.cpp ui/MyUI.cpp libs/ReplaceAll.cpp main.cpp -o main.exe
+g++ main.cpp businessobject/BusinessObject.cpp businessobject/Mark.cpp businessobject/Student.cpp businessobject/Subject.cpp dataaccess/SubjectData.cpp dataaccess/StudentData.cpp dataaccess/MarkData.cpp ui/Input.cpp ui/MyUI.cpp -o main.exe
